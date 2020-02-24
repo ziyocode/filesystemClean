@@ -13,13 +13,16 @@ import re
 from datetime import datetime
 
 # setting Configuration File
-configFile = str('/Users/ziyocode/Documents/workspaces/python/filesystemClean/filesystem_clean.conf')
+configFile = '/Users/ziyocode/Documents/workspaces/python/filesystemClean/filesystem_clean.conf'
 
 # setting Logging configuration
 logdir = '/var/log/filesystem_clean'
 log_expired_date = 10 # integer : days
 logdate = datetime.today().strftime('%Y%m%d')
 log_filename = logdir + '/filesystem_clean_' + logdate + '.log'
+
+if os.path.exists(logdir) == 'False':
+    os.mkdir(logdir)
 
 logger = logging.getLogger('filesystem_clean')
 logger.setLevel(logging.INFO)
