@@ -2,7 +2,7 @@
 # Original author: Ryan Cho
 # encoding: utf-8
 # purpose: Delete unnecessary files periodically via python program
-# config file path : ~/filesystemClean/filesystemClean.conf
+# config file path : ./filesystemClean.conf
 ###################################################################
 
 import os
@@ -13,7 +13,7 @@ import re
 from datetime import datetime
 
 # setting Configuration File
-configFile = "/Users/ziyocode/Documents/workspaces/python/filesystemClean/filesystem_clean.conf"
+configFile = ".//filesystem_clean.conf"
 
 # setting Logging configuration
 logdir = "/var/log/filesystem_clean"
@@ -138,10 +138,10 @@ def _automethod(running_mode, method_type, target_file):
 
 
 def autodelete(mode, work_dir, scope, prefix, target_time, method):
-    for (path, files) in os.walk(work_dir):
+    for (root, path, files) in os.walk(work_dir):
         for filename in files:
-            file_mtime = os.stat(os.path.join(path, filename)).st_mtime
-            file_fullpath = os.path.join(path, filename)
+            file_mtime = os.stat(os.path.join(root, filename)).st_mtime
+            file_fullpath = os.path.join(root, filename)
             if (current_time - file_mtime) > target_time:
                 if scope == "ALL":
                     _automethod(mode, method, file_fullpath)
@@ -170,11 +170,11 @@ def find_empty_dirs(running_mode, work_dir, scope, method):
 
 
 def own_log_delete(logdir, log_expired_date):
-    for (path, files) in os.walk(logdir):
+    for (root, path, files) in os.walk(logdir):
         for filename in files:
-            file_mtime = os.stat(os.path.join(path, filename)).st_mtime
+            file_mtime = os.stat(os.path.join(root, filename)).st_mtime
             if (current_time - file_mtime) > log_expired_date * 24 * 60 * 60:
-                file_fullpath = os.path.join(path, filename)
+                file_fullpath = os.path.join(root, filename)
                 logger.info("filesystem_clean logs deleted : %s", file_fullpath)
                 os.remove(file_fullpath)
 
