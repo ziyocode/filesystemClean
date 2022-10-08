@@ -143,9 +143,10 @@ def automethod(running_mode, method_type, target_file):
         if running_mode == "RUN":
             logger.info("[RUNNING] gzip File : %s", target_file)
             with open(target_file, "rb") as f_in:
-                with gzip.open(target_file, "wb") as f_out:
+                gzip_file = target_file + ".gz"
+                with gzip.open(gzip_file, "wb") as f_out:
                     shutil.copyfileobj(f_in, f_out)
-                    os.rename(target_file, target_file + ".gz")
+                    os.remove(target_file)
         else:
             logger.info("[DEBUG] gzip File : %s", target_file)
 
@@ -164,7 +165,7 @@ def autodelete(mode, work_dir, scope, condition, target_time, method):
                         if filename.startswith(condition_list[0]) and condition_list[1] in filename:
                             automethod(mode, method, file_fullpath)
                     else:
-                        if filename.startswith(prefix):
+                        if filename.startswith(condition):
                             automethod(mode, method, file_fullpath)
                 else:
                     logger.error("Please check the scope in configuration file.")
