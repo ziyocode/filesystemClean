@@ -146,7 +146,8 @@ def automethod(running_mode, method_type, target_file):
                 gzip_file = target_file + ".gz"
                 with gzip.open(gzip_file, "wb") as f_out:
                     shutil.copyfileobj(f_in, f_out)
-                    os.remove(target_file)
+                    if os.path.isfile(gzip_file):
+                        os.remove(target_file)
         else:
             logger.info("[DEBUG] gzip File : %s", target_file)
 
