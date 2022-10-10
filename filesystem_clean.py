@@ -139,7 +139,7 @@ def automethod(running_mode, method_type, target_file):
             nf.close()
         else:
             logger.info("[DEBUG] Initialized File : %s", target_file)
-    elif method_type == "GZIP" and os.path.getsize(target_file) != 0:
+    elif method_type == "GZIP" and os.path.getsize(target_file) != 0 and not target_file.endswith(".gz"):
         if running_mode == "RUN":
             logger.info("[RUNNING] gzip File : %s", target_file)
             with open(target_file, "rb") as f_in:
